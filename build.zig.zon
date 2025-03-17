@@ -1,16 +1,17 @@
 .{
-    .name = "oniguruma.zig",
+    .name = .oniguruma_zig,
     .version = "1.0.0",
-    .minimum_zig_version = "0.13.0",
+    .dependencies = .{
+        .toolbox = .{
+            .url = "git+https://github.com/tiawl/toolbox#02bb0af6ca24b747ca9de17325e8b422d9b5de2c",
+            .hash = "toolbox-1.11.2-kRAu4CVLAAC8cC-LITQL_lNOAKx1v9t6VTWfq1Q4uiJR",
+        },
+    },
+    .minimum_zig_version = "0.14.0",
+    .fingerprint = 0xa8fe3aae4d9255ad,
     .paths = .{
         "build.zig",
         "build.zig.zon",
         "oniguruma",
-    },
-    .dependencies = .{
-        .toolbox = .{
-            .url = "https://github.com/tiawl/toolbox/archive/refs/tags/1.11.2.tar.gz",
-            .hash = "122037046680450473adc3670f08c8695638d05f07c00be18e94ff3f7e21edf9ed9e",
-        },
     },
 }

@@ -149,13 +149,13 @@ pub fn build(builder: *std.Build) !void {
 
     const path = try Paths.init(builder);
 
-    const dependencies = try toolbox.Dependencies.init(builder, "oniguruma.zig", &.{
+    const dependencies = try toolbox.Dependencies.init(builder, .oniguruma_zig, "0xa8fe3aae4d9255ad", &.{
         "oniguruma",
     }, .{
         .toolbox = .{
             .name = "tiawl/toolbox",
             .host = toolbox.Repository.Host.github,
-            .ref = toolbox.Repository.Reference.tag,
+            .ref = toolbox.Repository.Reference.commit,
         },
     }, .{
         .oniguruma = .{
