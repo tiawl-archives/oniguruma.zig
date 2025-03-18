@@ -30,10 +30,6 @@ These repositories are automatically updated when a new release is available:
 This repository is automatically updated when a new release is available from these repositories:
 * [kkos/oniguruma][1]
 * [tiawl/toolbox][4]
-* [tiawl/spaceporn-action-bot][5]
-* [tiawl/spaceporn-action-ci][6]
-* [tiawl/spaceporn-action-cd-ping][7]
-* [tiawl/spaceporn-action-cd-pong][8]
 
 ## `zig build` options
 
@@ -55,7 +51,3 @@ The parts of this repository originated from this repository are dedicated to th
 [2]:https://github.com/ziglang/zig
 [3]:https://github.com/tiawl/libjq.zig
 [4]:https://github.com/tiawl/toolbox
-[5]:https://github.com/tiawl/spaceporn-action-bot
-[6]:https://github.com/tiawl/spaceporn-action-ci
-[7]:https://github.com/tiawl/spaceporn-action-cd-ping
-[8]:https://github.com/tiawl/spaceporn-action-cd-pong
