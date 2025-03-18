@@ -17,7 +17,7 @@ The goal of this repository is not to provide a [Zig][2] binding for [kkos/onigu
 
 ## Dependencies
 
-The [Zig][2] part of this package is relying on the latest [Zig][2] release (0.13.0) and will only be updated for the next one (so for the 0.14.0).
+The [Zig][2] part of this package is relying on the latest [Zig][2] release (0.14.0) and will only be updated for the next one (so for the 0.14.1).
 
 Here the repositories' version used by this fork:
 * [kkos/oniguruma](https://github.com/tiawl/oniguruma.zig/blob/trunk/.references/oniguruma)
