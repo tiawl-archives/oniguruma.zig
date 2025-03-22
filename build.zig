@@ -65,11 +65,11 @@ const Paths = struct {
 fn update(builder: *std.Build, path: *const Paths, dependencies: *const toolbox.Dependencies) !void {
     std.fs.deleteTreeAbsolute(path.getOniguruma()) catch |err|
         {
-        switch (err) {
-            error.FileNotFound => {},
-            else => return err,
-        }
-    };
+            switch (err) {
+                error.FileNotFound => {},
+                else => return err,
+            }
+        };
 
     try dependencies.clone(builder, "oniguruma", path.getTmp());
     try toolbox.run(builder, .{
@@ -196,8 +196,8 @@ pub fn build(builder: *std.Build) !void {
 
     var oniguruma_src_dir =
         try std.fs.openDirAbsolute(path.getOnigurumaSrc(), .{
-        .iterate = true,
-    });
+            .iterate = true,
+        });
     defer oniguruma_src_dir.close();
 
     const flags = [_][]const u8{};
