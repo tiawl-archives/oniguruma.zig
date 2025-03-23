@@ -34,15 +34,15 @@ const Paths = struct {
     }
 
     fn init() !@This() {
-        const oniguruma_path = try toolbox.instance().getBuilder().build_root.join(toolbox.instance().getBuilder().allocator, &.{
+        const oniguruma_path = try toolbox.instance().buildRootJoin(&.{
             "oniguruma",
         });
 
-        const tmp_path = try toolbox.instance().getBuilder().build_root.join(toolbox.instance().getBuilder().allocator, &.{
+        const tmp_path = try toolbox.instance().buildRootJoin(&.{
             "tmp",
         });
 
-        const oniguruma_src_path = toolbox.instance().ptrBuilder().pathJoin(&.{
+        const oniguruma_src_path = toolbox.instance().pathJoin(&.{
             oniguruma_path, "src",
         });
 
@@ -50,13 +50,13 @@ const Paths = struct {
             .__oniguruma = oniguruma_path,
             .__tmp = tmp_path,
             .__oniguruma_src = oniguruma_src_path,
-            .__oniguruma_src_linux = toolbox.instance().ptrBuilder().pathJoin(&.{
+            .__oniguruma_src_linux = toolbox.instance().pathJoin(&.{
                 oniguruma_src_path, "linux",
             }),
-            .__oniguruma_src_windows = toolbox.instance().ptrBuilder().pathJoin(&.{
+            .__oniguruma_src_windows = toolbox.instance().pathJoin(&.{
                 oniguruma_src_path, "windows",
             }),
-            .__tmp_src = toolbox.instance().ptrBuilder().pathJoin(&.{
+            .__tmp_src = toolbox.instance().pathJoin(&.{
                 tmp_path, "src",
             }),
         };
@@ -71,7 +71,7 @@ fn update(path: *const Paths) !void {
         }
     };
 
-    try toolbox.instance().clone("oniguruma", path.getTmp());
+    try toolbox.instance().clone(.oniguruma, path.getTmp());
     try toolbox.instance().run(.{
         .argv = &[_][]const u8{
             "autoreconf", "-vfi",
@@ -97,20 +97,20 @@ fn update(path: *const Paths) !void {
 
     var it = src_dir.iterate();
     while (try it.next()) |*entry| {
-        const dest = toolbox.instance().ptrBuilder().pathJoin(&.{
+        const dest = toolbox.instance().pathJoin(&.{
             if (std.mem.eql(u8, entry.name, "config.h")) path.getOnigurumaSrcLinux() else path.getOnigurumaSrc(), entry.name,
         });
         switch (entry.kind) {
-            .file => try toolbox.instance().copy(toolbox.instance().ptrBuilder().pathJoin(&.{
+            .file => try toolbox.instance().copy(toolbox.instance().pathJoin(&.{
                 path.getTmpSrc(), entry.name,
             }), dest),
             else => {},
         }
     }
 
-    try toolbox.instance().copy(toolbox.instance().ptrBuilder().pathJoin(&.{
+    try toolbox.instance().copy(toolbox.instance().pathJoin(&.{
         path.getTmpSrc(), "config.h.windows.in",
-    }), toolbox.instance().ptrBuilder().pathJoin(&.{
+    }), toolbox.instance().pathJoin(&.{
         path.getTmpSrc(), "config.h.in",
     }));
     try toolbox.instance().run(.{
@@ -120,14 +120,14 @@ fn update(path: *const Paths) !void {
         .cwd = path.getTmp(),
     });
 
-    try toolbox.instance().copy(toolbox.instance().ptrBuilder().pathJoin(&.{
+    try toolbox.instance().copy(toolbox.instance().pathJoin(&.{
         path.getTmpSrc(), "config.h",
-    }), toolbox.instance().ptrBuilder().pathJoin(&.{
+    }), toolbox.instance().pathJoin(&.{
         path.getOnigurumaSrcWindows(), "config.h",
     }));
 
     try std.fs.deleteTreeAbsolute(path.getTmp());
-    try std.fs.deleteTreeAbsolute(toolbox.instance().ptrBuilder().pathJoin(&.{
+    try std.fs.deleteTreeAbsolute(toolbox.instance().pathJoin(&.{
         path.getOnigurumaSrc(), "mktable.c",
     }));
 
@@ -169,20 +169,20 @@ pub fn build(builder: *std.Build) !void {
 
     if (toolbox.instance().getUpdate()) try update(&path);
 
-    const lib = toolbox.instance().ptrBuilder().addStaticLibrary(.{
+    const lib = builder.addStaticLibrary(.{
         .name = "oniguruma",
-        .root_source_file = toolbox.instance().ptrBuilder().addWriteFiles().add("empty.c", ""),
+        .root_source_file = builder.addWriteFiles().add("empty.c", ""),
         .target = target,
         .optimize = optimize,
     });
 
     for ([_][]const u8{
-        "oniguruma", toolbox.instance().ptrBuilder().pathJoin(&.{
+        "oniguruma", builder.pathJoin(&.{
             "oniguruma", "src",
         }),
     }) |include| toolbox.instance().addInclude(lib, include);
 
-    toolbox.instance().addInclude(lib, toolbox.instance().ptrBuilder().pathJoin(&.{
+    toolbox.instance().addInclude(lib, builder.pathJoin(&.{
         "oniguruma", "src", if (lib.rootModuleTarget().isMinGW()) "windows" else "linux",
     }));
 
@@ -212,5 +212,5 @@ pub fn build(builder: *std.Build) !void {
         }
     }
 
-    toolbox.instance().ptrBuilder().installArtifact(lib);
+    builder.installArtifact(lib);
 }
