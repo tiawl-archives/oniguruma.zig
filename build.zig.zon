@@ -3,7 +3,7 @@
     .version = "1.0.0",
     .dependencies = .{
         .toolbox = .{
-            .url = "../toolbox",
+            .url = "git+https://github.com/tiawl/toolbox#1b417058ddd7c5c52f26621a59c9ef40780faf8b",
             .hash = "toolbox-1.12.2-kRAu4GRZAAAiIQjk8qdsjXVdSro7DI9pI8J82LGG4k4j",
         },
     },
